@@ -2,15 +2,16 @@
   "name": "brainiacs",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "prefix": "app",
+  "prefix": "brn",
   "sourceRoot": "apps/brainiacs/src",
-  "tags": [],
+  "tags": ["scope:brainiacs", "type:app"],
   "targets": {
     "build": {
       "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
+        "polyfills": ["@angular/localize/init"],
         "outputPath": "dist/apps/brainiacs",
         "browser": "apps/brainiacs/src/main.ts",
         "tsConfig": "apps/brainiacs/tsconfig.app.json",
@@ -21,7 +22,7 @@
             "input": "apps/brainiacs/public"
           }
         ],
-        "styles": ["apps/brainiacs/src/styles.scss"]
+        "styles": ["apps/brainiacs/src/styles/styles.scss"]
       },
       "configurations": {
         "production": {
@@ -50,6 +51,9 @@
       "continuous": true,
       "executor": "@angular/build:dev-server",
       "defaultConfiguration": "development",
+      "options": {
+        "proxyConfig": "apps/brainiacs/proxy.conf.mjs"
+      },
       "configurations": {
         "production": {
           "buildTarget": "brainiacs:build:production"
@@ -58,19 +62,6 @@
           "buildTarget": "brainiacs:build:development"
         }
       }
-    },
-    "lint": {
-      "inputs": [
-        "default",
-        "^default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/.eslintignore",
-        "{workspaceRoot}/eslint.config.mjs",
-        "{workspaceRoot}/tools/eslint-rules/**/*",
-        {
-          "externalDependencies": ["eslint"]
-        }
-      ]
     },
     "test": {
       "executor": "@angular/build:unit-test",

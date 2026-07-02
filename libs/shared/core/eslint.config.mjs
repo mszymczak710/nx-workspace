@@ -1,4 +1,5 @@
 import nx from '@nx/eslint-plugin';
+
 import baseConfig from '../../../eslint.config.mjs';
 
 export default [
@@ -7,28 +8,15 @@ export default [
   ...baseConfig,
   {
     files: ['**/*.ts'],
-    rules: {
-      '@angular-eslint/directive-selector': [
-        'error',
-        {
-          type: 'attribute',
-          prefix: 'lib',
-          style: 'camelCase',
-        },
-      ],
-      '@angular-eslint/component-selector': [
-        'error',
-        {
-          type: 'element',
-          prefix: 'lib',
-          style: 'kebab-case',
-        },
-      ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.json', './tsconfig.lib.json', './tsconfig.spec.json'],
+        tsconfigRootDir: import.meta.dirname
+      }
     },
-  },
-  {
-    files: ['**/*.html'],
-    // Override or add rules here
-    rules: {},
-  },
+    rules: {
+      '@angular-eslint/component-selector': ['error', { type: 'element', prefix: 'lib', style: 'kebab-case' }],
+      '@angular-eslint/directive-selector': ['error', { type: 'attribute', prefix: 'lib', style: 'camelCase' }]
+    }
+  }
 ];

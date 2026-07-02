@@ -1,13 +1,9 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { NxWelcome } from './nx-welcome';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  imports: [NxWelcome, RouterModule],
-  selector: 'app-root',
+  imports: [],
+  selector: 'klg-root',
   templateUrl: './app.html',
-  styleUrl: './app.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class App {
-  protected title = 'invoice-generator';
-}
+export class App {}

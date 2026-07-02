@@ -1,38 +1,22 @@
-import nx from "@nx/eslint-plugin";
-import baseConfig from "../../eslint.config.mjs";
+import nx from '@nx/eslint-plugin';
+
+import baseConfig from '../../eslint.config.mjs';
 
 export default [
-    ...nx.configs["flat/angular"],
-    ...nx.configs["flat/angular-template"],
-    ...baseConfig,
-    {
-        files: [
-            "**/*.ts"
-        ],
-        rules: {
-            "@angular-eslint/directive-selector": [
-                "error",
-                {
-                    type: "attribute",
-                    prefix: "app",
-                    style: "camelCase"
-                }
-            ],
-            "@angular-eslint/component-selector": [
-                "error",
-                {
-                    type: "element",
-                    prefix: "app",
-                    style: "kebab-case"
-                }
-            ]
-        }
+  ...nx.configs['flat/angular'],
+  ...nx.configs['flat/angular-template'],
+  ...baseConfig,
+  {
+    files: ['**/*.ts'],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.json', './tsconfig.app.json', './tsconfig.spec.json'],
+        tsconfigRootDir: import.meta.dirname
+      }
     },
-    {
-        files: [
-            "**/*.html"
-        ],
-        // Override or add rules here
-        rules: {}
+    rules: {
+      '@angular-eslint/component-selector': ['error', { type: 'element', prefix: 'brn', style: 'kebab-case' }],
+      '@angular-eslint/directive-selector': ['error', { type: 'attribute', prefix: 'brn', style: 'camelCase' }]
     }
+  }
 ];

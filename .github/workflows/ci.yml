@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  format-check:
+    name: Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup
+      - uses: nrwl/nx-set-shas@v4
+        with:
+          main-branch-name: develop
+      - run: npx nx format:check --base=$NX_BASE --head=$NX_HEAD
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup
+      - uses: nrwl/nx-set-shas@v4
+        with:
+          main-branch-name: develop
+      - run: npx nx affected --target=lint --base=$NX_BASE --head=$NX_HEAD
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup
+      - uses: nrwl/nx-set-shas@v4
+        with:
+          main-branch-name: develop
+      - run: npx nx affected --target=test --base=$NX_BASE --head=$NX_HEAD
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [lint, format-check, test]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup
+      - uses: nrwl/nx-set-shas@v4
+        with:
+          main-branch-name: develop
+      - run: npx nx affected --target=build --base=$NX_BASE --head=$NX_HEAD

@@ -1,15 +1,14 @@
 /// <reference types='vitest' />
-import { defineConfig } from 'vite';
 import angular from '@analogjs/vite-plugin-angular';
-import tsconfigPaths from 'vite-tsconfig-paths';
+import { defineConfig } from 'vite';
 
 export default defineConfig(() => ({
   root: __dirname,
   cacheDir: '../../../node_modules/.vite/libs/shared/core',
-  plugins: [
-    angular({ tsconfig: './tsconfig.spec.json' }),
-    tsconfigPaths(),
-  ],
+  resolve: {
+    tsconfigPaths: true
+  },
+  plugins: [angular({ tsconfig: './tsconfig.spec.json' })],
   test: {
     name: 'core',
     watch: false,
@@ -20,7 +19,7 @@ export default defineConfig(() => ({
     reporters: ['default'],
     coverage: {
       reportsDirectory: '../../../coverage/libs/shared/core',
-      provider: 'v8' as const,
-    },
-  },
+      provider: 'v8' as const
+    }
+  }
 }));

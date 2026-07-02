@@ -2,9 +2,9 @@
   "name": "invoice-generator",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "prefix": "app",
+  "prefix": "klg",
   "sourceRoot": "apps/invoice-generator/src",
-  "tags": [],
+  "tags": ["scope:invoice-generator", "type:app"],
   "targets": {
     "build": {
       "executor": "@angular/build:application",
@@ -21,7 +21,7 @@
             "input": "apps/invoice-generator/public"
           }
         ],
-        "styles": ["apps/invoice-generator/src/styles.scss"]
+        "styles": ["apps/invoice-generator/src/styles/styles.scss"]
       },
       "configurations": {
         "production": {
@@ -50,6 +50,9 @@
       "continuous": true,
       "executor": "@angular/build:dev-server",
       "defaultConfiguration": "development",
+      "options": {
+        "proxyConfig": "apps/invoice-generator/proxy.conf.mjs"
+      },
       "configurations": {
         "production": {
           "buildTarget": "invoice-generator:build:production"
@@ -58,19 +61,6 @@
           "buildTarget": "invoice-generator:build:development"
         }
       }
-    },
-    "lint": {
-      "inputs": [
-        "default",
-        "^default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/.eslintignore",
-        "{workspaceRoot}/eslint.config.mjs",
-        "{workspaceRoot}/tools/eslint-rules/**/*",
-        {
-          "externalDependencies": ["eslint"]
-        }
-      ]
     },
     "test": {
       "executor": "@angular/build:unit-test",
