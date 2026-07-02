@@ -1,96 +1,165 @@
-# NxWorkspace
+# Nx Workspace
+
+This is an [Nx](https://nx.dev) monorepo containing two Angular applications and shared libraries.
 
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+## Applications
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+This workspace contains **two independent applications**:
 
-## Run tasks
+### 🧠 `brainiacs`
 
-To run tasks with Nx use:
+An Angular application that requires a dedicated backend to run.
 
-```sh
-npx nx <target> <project-name>
-```
+- **Backend repository:** [brainiacs-backend](https://github.com/mszymczak710/brainiacs-backend)
+- Before running `brainiacs` locally, clone and start the backend separately (see its own README for setup instructions).
+- The frontend is configured to proxy API requests to the backend during local development via `apps/brainiacs/proxy.conf.mjs`. Make sure the `target` in that file points to your locally running backend instance.
 
-For example:
+### 🧾 `invoice-generator`
 
-```sh
-npx nx build myproject
-```
+An Angular application backed by [`json-server`](https://github.com/typicode/json-server) as a lightweight mock REST API.
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+- No external backend repository is required.
+- `json-server` serves data from a local `db.json` file, making it self-contained and easy to run without any additional setup.
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Prerequisites
 
-## Add new projects
+- [Node.js](https://nodejs.org/) (LTS recommended)
+- npm
 
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
+## Installation
 
-To install a new plugin you can use the `nx add` command. Here's an example of adding the React plugin:
-```sh
-npx nx add @nx/react
-```
-
-Use the plugin's generator to create new projects. For example, to create a new React app or library:
+Clone the repository and install dependencies:
 
 ```sh
-# Generate an app
-npx nx g @nx/react:app demo
-
-# Generate a library
-npx nx g @nx/react:lib some-lib
+git clone https://github.com/mszymczak710/nx-workspace.git
+cd nx-workspace
+npm install
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+## Running the applications
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### brainiacs
 
-## Set up CI!
-
-### Step 1
-
-To connect to Nx Cloud, run the following command:
+1. Clone and start the [brainiacs-backend](https://github.com/mszymczak710/brainiacs-backend) following its own setup instructions.
+2. Update `apps/brainiacs/proxy.conf.mjs` if your backend runs on a different host/port than the default.
+3. Serve the frontend:
 
 ```sh
-npx nx connect
+npx nx serve brainiacs
+# or
+npm run start:brn
 ```
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+### invoice-generator
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
+1. Start the mock API with `json-server` (adjust the command/port to match your `db.json` location):
 
 ```sh
-npx nx g ci-workflow
+npm run mock:klg
 ```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+1. Serve the frontend:
 
-## Install Nx Console
+```sh
+npx nx serve invoice-generator
+# or
+npm run start:klg
+```
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+## Building
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```sh
+# Build a single app
+npx nx build brainiacs
+npx nx build invoice-generator
 
-## Useful links
+# Build everything
+npm run build
 
-Learn more:
+# Build only what's affected by your changes (compared to the base branch)
+npm run build:affected
+```
 
-- [Learn more about this workspace setup](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Testing
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### Unit tests (Vitest)
+
+All applications and shared libraries use [Vitest](https://vitest.dev/) for unit testing.
+
+```sh
+# Run unit tests for a single project
+npx nx test brainiacs
+npx nx test invoice-generator
+npx nx test core
+
+# Run all unit tests
+npm run test
+
+# Run only affected unit tests
+npm run test:affected
+```
+
+Coverage reports are generated automatically and can be found under the `coverage/` directory at the workspace root.
+
+### End-to-end tests
+
+The applications also include end-to-end (e2e) test coverage.
+
+```sh
+# Run e2e tests for a specific app
+npx nx e2e brainiacs-e2e
+npx nx e2e invoice-generator-e2e
+```
+
+> Note: for `brainiacs`, make sure the [brainiacs-backend](https://github.com/mszymczak710/brainiacs-backend) is running before executing e2e tests, since the app depends on it for real data. For `invoice-generator`, make sure `json-server` is running with the expected `db.json` fixture data.
+
+## Linting
+
+```sh
+# Lint a single project
+npx nx lint brainiacs
+
+# Lint everything
+npm run lint
+
+# Lint only affected projects
+npm run lint:affected
+
+# Lint and auto-fix affected projects
+npm run lint:fix:affected
+```
+
+## Project structure
+
+```plain
+apps/
+  brainiacs/            # Angular app – requires brainiacs-backend
+  invoice-generator/     # Angular app – requires json-server
+libs/
+  shared/
+    core/                # Shared services, interceptors, types, utils
+```
+
+## Useful Nx commands
+
+```sh
+# Visualize the project graph
+npx nx graph
+
+# Visualize the graph of affected projects
+npx nx affected:graph
+
+# Show a project's full configuration (targets, tags, executors, etc.)
+npx nx show project brainiacs --json
+```
+
+[Learn more about running tasks in Nx »](https://nx.dev/features/run-tasks)
+
+## Learn more
+
+- [Nx documentation](https://nx.dev)
+- [json-server documentation](https://github.com/typicode/json-server)
+- [Vitest documentation](https://vitest.dev/)
+- [brainiacs-backend repository](https://github.com/mszymczak710/brainiacs-backend)
