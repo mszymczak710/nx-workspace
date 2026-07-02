@@ -1,0 +1,119 @@
+<ng-container *transloco="let t">
+  <div class="modal-header">
+    <h3 class="modal-title">{{ title() }}</h3>
+    <button class="btn-close" [disabled]="userForm().submitting()" (click)="cancel()"></button>
+  </div>
+
+  <div class="modal-body">
+    <form [formRoot]="userForm" id="userForm">
+      @for (error of userForm().errors(); track error.kind) {
+        @if (error.kind === 'general' && error.message) {
+          <span class="alert alert-danger d-block mb-3">{{ t(error.message) }}</span>
+        }
+      }
+
+      <div class="row">
+        @for (config of fields(); track config.name) {
+          <ng-container
+            *ngTemplateOutlet="
+              fieldTpl;
+              context: {
+                field: config.field,
+                name: config.name,
+                label: config.label,
+                placeholder: config.placeholder,
+                required: config.required,
+                class: config.class,
+                type: config.type ?? 'text'
+              }
+            "
+          ></ng-container>
+        }
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" [disabled]="userForm().submitting()" (click)="cancel()">
+      {{ t('users.dialog.actions.cancel') }}
+    </button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="userForm().invalid() || avatarInvalid() || userForm().submitting()"
+      form="userForm"
+    >
+      {{ t('users.dialog.actions.save') }}
+      <brn-spinner [class.ms-2]="userForm().submitting()" [visible]="userForm().submitting()" [color]="'light'" />
+    </button>
+  </div>
+
+  <ng-template
+    #fieldTpl
+    let-field="field"
+    let-name="name"
+    let-label="label"
+    let-placeholder="placeholder"
+    let-required="required"
+    let-class="class"
+    let-type="type"
+  >
+    <div class="form-group mb-3" [class]="class">
+      <label class="ms-1" [for]="name">
+        {{ t(label) }}
+        @if (required) {
+          <span class="required">*</span>
+        }
+      </label>
+
+      @if (type === 'file') {
+        <input
+          #fileInput
+          [id]="name"
+          class="form-control mt-1"
+          type="file"
+          accept="image/png,image/jpeg,image/webp"
+          [class.is-invalid]="avatarTouched() && avatarInvalid()"
+          (change)="onAvatarChange($event)"
+          (blur)="avatarTouched.set(true)"
+        />
+        @if (avatarTouched() && avatarInvalid()) {
+          <div class="text-danger">
+            <small>{{ t('users.dialog.validation.required') }}</small>
+          </div>
+        }
+
+        @if (avatarSizeInvalid()) {
+          <div class="text-danger">
+            <small>{{ t('users.dialog.validation.avatar.square') }}</small>
+          </div>
+        }
+
+        @if (avatarPreview()) {
+          <div class="d-flex justify-content-center mt-4">
+            <img [src]="avatarPreview()" alt="avatar" class="avatar-preview" />
+          </div>
+        }
+      } @else {
+        <input
+          [id]="name"
+          class="form-control mt-1"
+          [type]="type"
+          [formField]="field"
+          [placeholder]="t(placeholder)"
+          [class.is-invalid]="field().touched() && field().invalid()"
+          [class.is-valid]="field().touched() && field().valid()"
+        />
+        @if (field().touched() && field().invalid()) {
+          <div class="text-danger">
+            @for (error of field().errors(); track error) {
+              @if (error.message) {
+                <small>{{ t(error.message) }}</small>
+              }
+            }
+          </div>
+        }
+      }
+    </div>
+  </ng-template>
+</ng-container>

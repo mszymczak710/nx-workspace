@@ -1,0 +1,7 @@
+@if (visible()) {
+  <ng-container *transloco="let t">
+    <div class="spinner-border text-primary" [ngClass]="['spinner-border-' + size(), 'text-' + color()]" role="status">
+      <span class="visually-hidden">{{ t(label()) }}</span>
+    </div>
+  </ng-container>
+}

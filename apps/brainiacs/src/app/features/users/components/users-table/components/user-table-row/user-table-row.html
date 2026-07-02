@@ -1,0 +1,23 @@
+<ng-container *transloco="let t">
+  <td class="align-middle">{{ user().id }}</td>
+  <td class="align-middle">
+    <img class="avatar" [src]="user().avatar" alt="{{ user().firstName }} {{ user().lastName }}" />
+  </td>
+  <td class="align-middle">
+    <span>{{ user().firstName }}</span>
+  </td>
+  <td class="align-middle">
+    <span>{{ user().lastName }}</span>
+  </td>
+  <td class="align-middle">
+    <span>{{ user().email }}</span>
+  </td>
+  <td class="align-middle text-end">
+    <button class="btn btn-sm" [ngbTooltip]="t('users.table.actions.update')" (click)="updateUser.emit()">
+      <i class="fas fa-edit"></i>
+    </button>
+    <button class="btn btn-sm" [ngbTooltip]="t('users.table.actions.delete')" (click)="deleteUser.emit()">
+      <i class="fas fa-trash-alt"></i>
+    </button>
+  </td>
+</ng-container>

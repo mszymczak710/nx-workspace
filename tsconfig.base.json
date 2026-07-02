@@ -14,7 +14,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "paths": {
-      "@nx-workspace/core": ["./libs/shared/core/src/index.ts"]
+      "@libs/shared/core/services": ["./libs/shared/core/src/services/index.ts"],
+      "@libs/shared/core/interceptors": ["./libs/shared/core/src/interceptors/index.ts"],
+      "@libs/shared/core/types": ["./libs/shared/core/src/types/index.ts"],
+      "@libs/shared/core/testing": ["./libs/shared/core/src/testing/index.ts"],
+      "@libs/shared/core/utils": ["./libs/shared/core/src/utils/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

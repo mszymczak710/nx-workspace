@@ -1,0 +1,14 @@
+<ng-container *transloco="let t">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex align-items-center gap-2">
+      <label for="pageSize">{{ t('users.table.pageSize') }}</label>
+      <select id="pageSize" class="form-select form-select-sm w-auto" [ngModel]="pageSize()" (ngModelChange)="onPageSizeChange($event)">
+        @for (size of pageSizeOptions(); track size) {
+          <option [value]="size">{{ size }}</option>
+        }
+      </select>
+    </div>
+
+    <ngb-pagination [collectionSize]="collectionSize()" [pageSize]="pageSize()" [page]="page()" (pageChange)="onPageChange($event)" />
+  </div>
+</ng-container>

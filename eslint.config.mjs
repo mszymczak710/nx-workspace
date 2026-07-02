@@ -32,10 +32,6 @@ export default [
             {
               sourceTag: 'scope:shared',
               onlyDependOnLibsWithTags: ['scope:shared']
-            },
-            {
-              sourceTag: '*',
-              onlyDependOnLibsWithTags: []
             }
           ]
         }

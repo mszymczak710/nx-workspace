@@ -1,0 +1,14 @@
+<ng-container *transloco="let t">
+  <div class="container py-5 d-flex flex-column align-items-center text-center">
+    <img src="/images/not-found.svg" [alt]="" class="mb-2" />
+
+    <p class="display-3 fw-medium mb-3" style="color: var(--bs-primary)">404</p>
+    <h1 class="h3 mb-2">{{ t('notFound.title') }}</h1>
+    <p class="text-secondary mb-4">{{ t('notFound.message') }}</p>
+
+    <button [routerLink]="['/home']" class="btn btn-outline-secondary">
+      <i class="fa fa-home me-2"></i>
+      {{ t('notFound.button') }}
+    </button>
+  </div>
+</ng-container>

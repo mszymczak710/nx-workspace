@@ -1,0 +1,111 @@
+{
+  "home": {
+    "button": "Go to users list",
+    "title": "Welcome to the app for smart people!"
+  },
+  "notFound": {
+    "title": "Oops! This page vanished between the synapses",
+    "message": "The page you're looking for doesn't exist or has been moved.",
+    "button": "Back to home page"
+  },
+  "shared": {
+    "loading": "Loading..."
+  },
+  "errors": {
+    "http": {
+      "400": "An error occurred",
+      "401": "Authentication credentials were not provided.",
+      "403": "You do not have permission to perform this action.",
+      "404": "The requested resource was not found.",
+      "429": "Too many requests. Please try again later.",
+      "500": "An internal server error occurred. Please try again later.",
+      "unknown": "An unexpected error occurred. Please try again."
+    }
+  },
+  "navigation": {
+    "appName": "Brainiacs",
+    "selectLanguage": {
+      "en": "English",
+      "pl": "Polish"
+    },
+    "help": "Help",
+    "home": "Home",
+    "users": "Brainiacs list"
+  },
+  "users": {
+    "dialog": {
+      "actions": {
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "save": "Save"
+      },
+      "create": {
+        "title": "Add new brainiac"
+      },
+      "delete": {
+        "confirmationMessage": "Are you sure you want to delete user {{firstName}} {{lastName}}?",
+        "title": "Delete brainiac"
+      },
+      "fields": {
+        "avatar": {
+          "label": "Avatar"
+        },
+        "email": {
+          "label": "Email address",
+          "placeholder": "Enter email address..."
+        },
+        "firstName": {
+          "label": "First name",
+          "placeholder": "Enter first name..."
+        },
+        "lastName": {
+          "label": "Last name",
+          "placeholder": "Enter last name..."
+        }
+      },
+      "update": {
+        "title": "Edit brainiac"
+      },
+      "validation": {
+        "maxlength": "This field is too long",
+        "required": "This field is required",
+        "email": {
+          "email": "Invalid email address",
+          "maxlength": "This field is too long"
+        },
+        "firstName": {
+          "pattern": "Invalid first name"
+        },
+        "lastName": {
+          "pattern": "Invalid last name"
+        },
+        "avatar": {
+          "square": "Image width must be equal to its height"
+        }
+      }
+    },
+    "toast": {
+      "createSuccess": "User added successfully!",
+      "deleteSuccess": "User deleted successfully!",
+      "updateSuccess": "User updated successfully!"
+    },
+    "header": {
+      "button": "Add brainiac",
+      "title": "Brainiacs list"
+    },
+    "table": {
+      "actions": {
+        "delete": "Delete user",
+        "update": "Edit user"
+      },
+      "columns": {
+        "email": "Email",
+        "firstName": "First name",
+        "id": "ID",
+        "lastName": "Last name"
+      },
+      "pageSize": "Items per page:",
+      "noDataRow": "No users found"
+    }
+  }
+}

@@ -1,0 +1,43 @@
+<ng-container *transloco="let t">
+  @if (!loading()) {
+    <div class="table-responsive-sm">
+      <table class="table table-striped">
+        <thead class="table-secondary">
+          <tr>
+            <th scope="col">{{ t('users.table.columns.id') }}</th>
+            <th scope="col"></th>
+            <th scope="col">{{ t('users.table.columns.firstName') }}</th>
+            <th scope="col">{{ t('users.table.columns.lastName') }}</th>
+            <th scope="col">{{ t('users.table.columns.email') }}</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        @if (users().length > 0) {
+          <tbody>
+            @for (user of users(); track user.id) {
+              <tr brn-user-table-row [user]="user" (updateUser)="updateUser(user)" (deleteUser)="deleteUser(user)"></tr>
+            }
+          </tbody>
+        } @else {
+          <tr class="empty-row text-center text-danger">
+            <td class="p-3" colspan="6">{{ t('users.table.noDataRow') }}</td>
+          </tr>
+        }
+      </table>
+    </div>
+
+    @if (users().length > 0) {
+      <brn-user-table-pagination
+        [page]="page()"
+        [pageSize]="pageSize()"
+        [collectionSize]="totalElements()"
+        (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)"
+      />
+    }
+  } @else {
+    <div class="text-center p-5">
+      <brn-spinner [visible]="true" [size]="'xl'" />
+    </div>
+  }
+</ng-container>

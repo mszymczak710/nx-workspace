@@ -1,0 +1,111 @@
+{
+  "home": {
+    "button": "Przejdź do listy użytkowników",
+    "title": "Witaj w aplikacji mądrych ludzi!"
+  },
+  "notFound": {
+    "title": "Ups! Ta strona zniknęła gdzieś między synapsami",
+    "message": "Strona, której szukasz, nie istnieje albo została przeniesiona.",
+    "button": "Wróć do strony głównej"
+  },
+  "shared": {
+    "loading": "Trwa ładowanie..."
+  },
+  "errors": {
+    "http": {
+      "400": "Wystąpił błąd",
+      "401": "Nie podano danych uwierzytelniających.",
+      "403": "Nie masz uprawnień, by wykonać tę czynność.",
+      "404": "Nie znaleziono zasobu.",
+      "429": "Za dużo żądań. Spróbuj ponownie później.",
+      "500": "Wystąpił wewnętrzny błąd serwera. Spróbuj ponownie później.",
+      "unknown": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie."
+    }
+  },
+  "navigation": {
+    "appName": "Brainiacs",
+    "selectLanguage": {
+      "en": "Angielski",
+      "pl": "Polski"
+    },
+    "help": "Pomoc",
+    "home": "Strona główna",
+    "users": "Lista mądrych ludzi"
+  },
+  "users": {
+    "dialog": {
+      "actions": {
+        "cancel": "Anuluj",
+        "delete": "Usuń",
+        "save": "Zapisz"
+      },
+      "create": {
+        "title": "Dodawanie nowego mózgowca"
+      },
+      "delete": {
+        "confirmationMessage": "Czy na pewno chcesz usunąć użytkownika {{firstName}} {{lastName}}?",
+        "title": "Usuwanie mózgowca"
+      },
+      "fields": {
+        "avatar": {
+          "label": "Awatar"
+        },
+        "email": {
+          "label": "Adres e-mail",
+          "placeholder": "Wpisz adres e-mail..."
+        },
+        "firstName": {
+          "label": "Imię",
+          "placeholder": "Wpisz imię..."
+        },
+        "lastName": {
+          "label": "Nazwisko",
+          "placeholder": "Wpisz nazwisko..."
+        }
+      },
+      "update": {
+        "title": "Edycja mózgowca"
+      },
+      "validation": {
+        "maxlength": "Pole zawiera za dużo znaków",
+        "required": "Pole jest wymagane",
+        "email": {
+          "email": "Niepoprawny adres e-mail",
+          "maxlength": "Pole zawiera za dużo znaków"
+        },
+        "firstName": {
+          "pattern": "Niepoprawne imię"
+        },
+        "lastName": {
+          "pattern": "Niepoprawne nazwisko"
+        },
+        "avatar": {
+          "square": "Szerokość zdjęcia musi być równa jego wysokości"
+        }
+      }
+    },
+    "toast": {
+      "createSuccess": "Użytkownik dodany pomyślnie!",
+      "deleteSuccess": "Użytkownik został usunięty pomyślnie!",
+      "updateSuccess": "Użytkownik został zaktualizowany pomyślnie!"
+    },
+    "header": {
+      "button": "Dodaj mózgowca",
+      "title": "Lista mądrych ludzi"
+    },
+    "table": {
+      "actions": {
+        "delete": "Usuń użytkownika",
+        "update": "Edytuj użytkownika"
+      },
+      "columns": {
+        "email": "E-mail",
+        "firstName": "Imię",
+        "id": "ID",
+        "lastName": "Nazwisko"
+      },
+      "pageSize": "Liczba elementów na stronie:",
+      "noDataRow": "Brak użytkowników"
+    }
+  }
+}
