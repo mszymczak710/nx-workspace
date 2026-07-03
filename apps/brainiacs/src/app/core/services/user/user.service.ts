@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
+import { environment } from '../../../../environments/environment';
 import { ListResponse } from '../../types/list-response.model';
 import { User, UserQueryParams, UserSaveData } from '../../types/user.model';
 
@@ -11,7 +12,7 @@ import { User, UserQueryParams, UserSaveData } from '../../types/user.model';
 })
 export class UserService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = '/api/users';
+  private readonly apiUrl = `${environment.apiUrl}/users`;
 
   getUsers(options?: UserQueryParams): Observable<ListResponse<User>> {
     let params = new HttpParams();
