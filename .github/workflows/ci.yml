@@ -67,3 +67,31 @@ jobs:
         with:
           main-branch-name: develop
       - run: npx nx affected --target=build --base=$NX_BASE --head=$NX_HEAD
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+    needs: [lint, format-check, test, build]
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup
+      - uses: nrwl/nx-set-shas@v4
+        with:
+          main-branch-name: develop
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Deploy brainiacs
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_BRAINIACS }}
+        run: |
+          vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+          vercel build --prod --token=$VERCEL_TOKEN
+          vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
