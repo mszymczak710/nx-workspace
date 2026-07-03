@@ -13,7 +13,7 @@
       }
 
       <div class="row">
-        @for (config of fields(); track config.name) {
+        @for (config of fields(); track config.name; let isFirst = $first) {
           <ng-container
             *ngTemplateOutlet="
               fieldTpl;
@@ -24,7 +24,8 @@
                 placeholder: config.placeholder,
                 required: config.required,
                 class: config.class,
-                type: config.type ?? 'text'
+                type: config.type ?? 'text',
+                isFirst: isFirst
               }
             "
           ></ng-container>
@@ -40,6 +41,7 @@
     <button
       type="submit"
       class="btn btn-primary"
+      ngbAutofocus
       [disabled]="userForm().invalid() || avatarInvalid() || userForm().submitting()"
       form="userForm"
     >
@@ -57,6 +59,7 @@
     let-required="required"
     let-class="class"
     let-type="type"
+    let-isFirst="isFirst"
   >
     <div class="form-group mb-3" [class]="class">
       <label class="ms-1" [for]="name">
@@ -74,6 +77,7 @@
           type="file"
           accept="image/png,image/jpeg,image/webp"
           [disabled]="avatarLoading()"
+          [attr.ngbAutofocus]="isFirst ? '' : null"
           [class.is-invalid]="avatarTouched() && avatarInvalid() && !avatarLoading()"
           (change)="onAvatarChange($event)"
           (blur)="avatarTouched.set(true)"
@@ -106,6 +110,7 @@
           class="form-control mt-1"
           [type]="type"
           [formField]="field"
+          [attr.ngbAutofocus]="isFirst ? '' : null"
           [placeholder]="t(placeholder)"
           [class.is-invalid]="field().touched() && field().invalid()"
           [class.is-valid]="field().touched() && field().valid()"
