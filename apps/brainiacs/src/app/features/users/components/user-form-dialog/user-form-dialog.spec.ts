@@ -119,6 +119,13 @@ describe('UserFormDialog', () => {
     await fixture.whenStable();
   };
 
+  const flushAvatarRequest = async (): Promise<void> => {
+    const req = httpMock.expectOne(mockUser.avatar);
+    req.flush(new Blob(['avatar-bytes'], { type: 'image/png' }));
+
+    await fixture.whenStable();
+  };
+
   beforeEach(() => {
     userStoreMock = {
       selectedUser: signal<User | null>(null),
@@ -147,6 +154,7 @@ describe('UserFormDialog', () => {
   it('should create in "update" mode when a user is selected', async () => {
     userStoreMock.selectedUser.set(mockUser);
     await setup();
+    await flushAvatarRequest();
 
     expect(component.isUpdate()).toBe(true);
   });
@@ -154,6 +162,7 @@ describe('UserFormDialog', () => {
   it('should fill the form fields with the selected user data in update mode', async () => {
     userStoreMock.selectedUser.set(mockUser);
     await setup();
+    await flushAvatarRequest();
 
     const firstName: HTMLInputElement = fixture.nativeElement.querySelector('#firstName');
     const lastName: HTMLInputElement = fixture.nativeElement.querySelector('#lastName');
@@ -162,6 +171,15 @@ describe('UserFormDialog', () => {
     expect(firstName.value).toBe(mockUser.firstName);
     expect(lastName.value).toBe(mockUser.lastName);
     expect(email.value).toBe(mockUser.email);
+  });
+
+  it('should be true immediately when editing a user with an existing avatar', async () => {
+    userStoreMock.selectedUser.set(mockUser);
+    await setup();
+
+    expect(component.avatarLoading()).toBe(true);
+
+    await flushAvatarRequest();
   });
 
   it('should fetch the existing avatar over HttpClient when editing a user that has one', async () => {
@@ -176,13 +194,27 @@ describe('UserFormDialog', () => {
 
     expect(component.avatarFile()).toBeTruthy();
     expect(component.avatarPreview()).toBe(mockUser.avatar);
+    expect(component.avatarLoading()).toBe(false);
 
     httpMock.verify();
+  });
+
+  it('should reset avatarLoading and leave the avatar empty when the avatar request fails', async () => {
+    userStoreMock.selectedUser.set(mockUser);
+    await setup();
+
+    const req = httpMock.expectOne(mockUser.avatar);
+    req.flush(new Blob(['not found'], { type: 'text/plain' }), { status: 404, statusText: 'Not Found' });
+    await fixture.whenStable();
+
+    expect(component.avatarLoading()).toBe(false);
+    expect(component.avatarFile()).toBeNull();
   });
 
   it('should not attempt to fetch an avatar when creating a new user', async () => {
     await setup();
 
+    expect(component.avatarLoading()).toBe(false);
     httpMock.expectNone(() => true);
   });
 
@@ -230,6 +262,49 @@ describe('UserFormDialog', () => {
     expect(submitButton.disabled).toBe(true);
   });
 
+  it('should disable the file input and the submit button while the avatar is still loading', async () => {
+    userStoreMock.selectedUser.set(mockUser);
+    await setup();
+    await fillValidFormFields();
+
+    const fileInput: HTMLInputElement = fixture.nativeElement.querySelector('#avatar');
+    const submitButton: HTMLButtonElement = fixture.nativeElement.querySelector('button[type="submit"]');
+
+    expect(fileInput.disabled).toBe(true);
+    expect(submitButton.disabled).toBe(true);
+
+    await flushAvatarRequest();
+
+    expect(fileInput.disabled).toBe(false);
+    expect(submitButton.disabled).toBe(false);
+  });
+
+  it('should show the spinner while loading and the avatar preview once loading completes', async () => {
+    userStoreMock.selectedUser.set(mockUser);
+    await setup();
+
+    expect(fixture.nativeElement.querySelector('brn-spinner')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.avatar-preview')).toBeFalsy();
+
+    await flushAvatarRequest();
+
+    expect(fixture.nativeElement.querySelector('.avatar-preview')).toBeTruthy();
+  });
+
+  it('should not show the required validation message while the avatar is still loading', async () => {
+    userStoreMock.selectedUser.set(mockUser);
+    await setup();
+
+    const fileInput: HTMLInputElement = fixture.nativeElement.querySelector('#avatar');
+    fileInput.dispatchEvent(new Event('blur'));
+    await fixture.whenStable();
+
+    const alert = fixture.nativeElement.querySelector('.text-danger');
+    expect(alert).toBeFalsy();
+
+    await flushAvatarRequest();
+  });
+
   it('should show a general error and not submit when the avatar is missing on submission', async () => {
     await setup();
     await fillValidFormFields();
@@ -261,10 +336,7 @@ describe('UserFormDialog', () => {
     userStoreMock.updateUser.mockReturnValue(of(mockUser));
 
     await setup();
-
-    const req = httpMock.expectOne(mockUser.avatar);
-    req.flush(new Blob(['avatar-bytes'], { type: 'image/png' }));
-    await fixture.whenStable();
+    await flushAvatarRequest();
 
     await fillValidFormFields();
     await submitForm();

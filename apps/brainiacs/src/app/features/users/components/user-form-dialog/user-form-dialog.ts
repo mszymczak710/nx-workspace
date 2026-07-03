@@ -35,6 +35,7 @@ export class UserFormDialog {
   readonly avatarTouched = signal(false);
   readonly avatarSizeInvalid = signal(false);
   readonly avatarPreview = signal<string | null>(null);
+  readonly avatarLoading = signal(false);
 
   readonly userModel = signal({
     firstName: this.user()?.firstName ?? '',
@@ -154,6 +155,7 @@ export class UserFormDialog {
   }
 
   private setAvatarValue(avatar: string): Subscription {
+    this.avatarLoading.set(true);
     return this.http.get(avatar, { responseType: 'blob' }).subscribe({
       next: blob => {
         const file = new File([blob], 'avatar.png', { type: blob.type || 'image/png' });
@@ -171,7 +173,11 @@ export class UserFormDialog {
         this.avatarFile.set(file);
         this.setPreview(avatar);
       },
-      error: error => console.error('Failed to load avatar:', error)
+      error: error => {
+        console.error('Failed to load avatar:', error);
+        this.avatarLoading.set(false);
+      },
+      complete: () => this.avatarLoading.set(false)
     });
   }
 

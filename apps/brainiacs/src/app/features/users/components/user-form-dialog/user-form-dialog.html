@@ -73,11 +73,13 @@
           class="form-control mt-1"
           type="file"
           accept="image/png,image/jpeg,image/webp"
-          [class.is-invalid]="avatarTouched() && avatarInvalid()"
+          [disabled]="avatarLoading()"
+          [class.is-invalid]="avatarTouched() && avatarInvalid() && !avatarLoading()"
           (change)="onAvatarChange($event)"
           (blur)="avatarTouched.set(true)"
         />
-        @if (avatarTouched() && avatarInvalid()) {
+
+        @if (avatarTouched() && avatarInvalid() && !avatarLoading()) {
           <div class="text-danger">
             <small>{{ t('users.dialog.validation.required') }}</small>
           </div>
@@ -89,7 +91,11 @@
           </div>
         }
 
-        @if (avatarPreview()) {
+        @if (avatarLoading()) {
+          <div class="d-flex justify-content-center mt-4">
+            <brn-spinner [visible]="true" size="xxl" [color]="'primary'" />
+          </div>
+        } @else if (avatarPreview()) {
           <div class="d-flex justify-content-center mt-4">
             <img [src]="avatarPreview()" alt="avatar" class="avatar-preview" />
           </div>
