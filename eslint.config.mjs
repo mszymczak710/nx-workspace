@@ -1,4 +1,5 @@
 import nx from '@nx/eslint-plugin';
+import vitest from '@vitest/eslint-plugin';
 
 import eslintConfigPrettier from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
@@ -123,8 +124,21 @@ export default [
   },
   {
     files: ['**/*.spec.ts', '**/*.test.ts'],
+    plugins: { vitest },
     rules: {
-      '@typescript-eslint/no-empty-function': 'off'
+      ...vitest.configs.recommended.rules,
+      '@typescript-eslint/no-empty-function': 'off',
+      'vitest/expect-expect': [
+        'error',
+        {
+          assertFunctionNames: ['expect', '*.expectNone', '*.expectOne', '*.verify']
+        }
+      ]
+    },
+    languageOptions: {
+      globals: {
+        ...vitest.environments.env.globals
+      }
     }
   },
   {
