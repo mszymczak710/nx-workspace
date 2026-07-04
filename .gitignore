@@ -51,3 +51,5 @@ __screenshots__/
 vitest.config.*.timestamp*
 .vercel
 .env*
+
+.scannerwork
