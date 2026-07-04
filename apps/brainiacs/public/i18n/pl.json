@@ -42,6 +42,7 @@
       "create": {
         "title": "Dodawanie nowego mózgowca"
       },
+      "confirmClose": "Masz niezapisane zmiany. Czy na pewno chcesz zamknąć okno?",
       "delete": {
         "confirmationMessage": "Czy na pewno chcesz usunąć użytkownika {{firstName}} {{lastName}}?",
         "title": "Usuwanie mózgowca"

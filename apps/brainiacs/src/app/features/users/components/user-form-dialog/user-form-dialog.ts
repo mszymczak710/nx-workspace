@@ -46,6 +46,8 @@ export class UserFormDialog {
   readonly isUpdate = computed(() => !!this.user());
   readonly avatarInvalid = computed(() => !this.avatarFile() || this.avatarSizeInvalid());
 
+  readonly hasUnsavedChanges = computed(() => this.userForm().dirty() || this.avatarTouched());
+
   readonly fields = computed((): FormFieldConfig[] => [
     {
       field: this.userForm.firstName,
@@ -188,6 +190,8 @@ export class UserFormDialog {
       return;
     }
 
+    this.avatarTouched.set(true);
+
     const file = input.files[0];
     const url = URL.createObjectURL(file);
     const isSquare = await this.isSquareImage(url);
@@ -227,5 +231,13 @@ export class UserFormDialog {
 
   cancel(): void {
     this.modal.dismiss();
+  }
+
+  canDismiss(): boolean {
+    if (!this.hasUnsavedChanges()) {
+      return true;
+    }
+
+    return window.confirm(this.translocoService.translate('users.dialog.confirmClose'));
   }
 }

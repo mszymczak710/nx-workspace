@@ -56,10 +56,7 @@ describe('Users', () => {
   it('should open UserFormDialog with correct options on addUser()', () => {
     component.addUser();
 
-    expect(modalMock.open).toHaveBeenCalledWith(UserFormDialog, {
-      size: 'md',
-      backdrop: 'static'
-    });
+    expect(modalMock.open).toHaveBeenCalledWith(UserFormDialog, expect.objectContaining({ size: 'md', backdrop: 'static' }));
   });
 
   it('should call addUser() when button is clicked', () => {

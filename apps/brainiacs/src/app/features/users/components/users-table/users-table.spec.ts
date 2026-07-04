@@ -133,7 +133,7 @@ describe('UsersTable', () => {
     component.updateUser(user);
 
     expect(userStoreMock.setSelectedUser).toHaveBeenCalledWith(user);
-    expect(modalMock.open).toHaveBeenCalledWith(UserFormDialog, { size: 'md', backdrop: 'static' });
+    expect(modalMock.open).toHaveBeenCalledWith(UserFormDialog, expect.objectContaining({ size: 'md', backdrop: 'static' }));
   });
 
   it('should call changePageSize on the store when the page size changes', () => {

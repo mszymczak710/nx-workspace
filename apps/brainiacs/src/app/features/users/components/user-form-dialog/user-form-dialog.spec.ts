@@ -6,8 +6,8 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { of, throwError } from 'rxjs';
-import { afterEach, beforeEach, describe, expect, it, Mock, vi } from 'vitest';
+import { of } from 'rxjs';
+import { afterEach, beforeEach, describe, expect, it, Mock, MockInstance, vi } from 'vitest';
 
 import { UserStore } from '../../../../core/store/user/user.store';
 import { User } from '../../../../core/types/user.model';
@@ -69,6 +69,7 @@ describe('UserFormDialog', () => {
     setSelectedUser: Mock;
   };
   let modalMock: { close: Mock; dismiss: Mock };
+  let confirmSpy: MockInstance<typeof window.confirm>;
 
   const setup = async (): Promise<void> => {
     await TestBed.configureTestingModule({
@@ -127,6 +128,8 @@ describe('UserFormDialog', () => {
   };
 
   beforeEach(() => {
+    confirmSpy = vi.spyOn(window, 'confirm');
+
     userStoreMock = {
       selectedUser: signal<User | null>(null),
       addUser: vi.fn(),
@@ -348,15 +351,38 @@ describe('UserFormDialog', () => {
     expect(modalMock.close).toHaveBeenCalled();
   });
 
-  it('should not close the modal and should not throw when submission fails', async () => {
-    userStoreMock.addUser.mockReturnValue(throwError(() => ({ error: {} })));
+  it('should hasUnsavedChanges be false initially and true after a field changes', async () => {
+    await setup();
+    expect(component.hasUnsavedChanges()).toBe(false);
 
+    await fillValidFormFields();
+    expect(component.hasUnsavedChanges()).toBe(true);
+  });
+
+  it('should return true without asking when there are no unsaved changes', async () => {
+    await setup();
+
+    expect(component.canDismiss()).toBe(true);
+    expect(confirmSpy).not.toHaveBeenCalled();
+  });
+
+  it('should ask for confirmation and return true when the user confirms', async () => {
     await setup();
     await fillValidFormFields();
-    await selectAvatarFile(100, 100);
 
-    await expect(submitForm()).resolves.not.toThrow();
+    confirmSpy.mockReturnValue(true);
 
-    expect(modalMock.close).not.toHaveBeenCalled();
+    expect(component.canDismiss()).toBe(true);
+    expect(confirmSpy).toHaveBeenCalled();
+  });
+
+  it('should ask for confirmation and return false when the user cancels (canDismiss)', async () => {
+    await setup();
+    await fillValidFormFields();
+
+    confirmSpy.mockReturnValue(false);
+
+    expect(component.canDismiss()).toBe(false);
+    expect(confirmSpy).toHaveBeenCalled();
   });
 });

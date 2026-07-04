@@ -39,7 +39,11 @@ export class UsersTable {
 
   updateUser(user: User): void {
     this.userStore.setSelectedUser(user);
-    this.modal.open(UserFormDialog, { size: 'md', backdrop: 'static' });
+    const modalRef = this.modal.open(UserFormDialog, {
+      size: 'md',
+      backdrop: 'static',
+      beforeDismiss: () => modalRef.componentInstance.canDismiss()
+    });
   }
 
   onPageSizeChange(pageSize: number): void {

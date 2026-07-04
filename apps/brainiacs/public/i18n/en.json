@@ -42,6 +42,7 @@
       "create": {
         "title": "Add new brainiac"
       },
+      "confirmClose": "You have unsaved changes. Are you sure you want to close the window?",
       "delete": {
         "confirmationMessage": "Are you sure you want to delete user {{firstName}} {{lastName}}?",
         "title": "Delete brainiac"

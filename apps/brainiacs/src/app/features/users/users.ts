@@ -20,6 +20,10 @@ export class Users {
   readonly loading = this.userStore.loading;
 
   addUser(): void {
-    this.modal.open(UserFormDialog, { size: 'md', backdrop: 'static' });
+    const modalRef = this.modal.open(UserFormDialog, {
+      size: 'md',
+      backdrop: 'static',
+      beforeDismiss: () => modalRef.componentInstance.canDismiss()
+    });
   }
 }
