@@ -20,7 +20,11 @@
     },
     "@angular/build:unit-test": {
       "cache": true,
-      "inputs": ["default", "^production"]
+      "inputs": ["default", "^production"],
+      "options": {
+        "coverage": true,
+        "coverageReporters": ["text", "html", "lcov", "cobertura"]
+      }
     }
   },
   "generators": {

@@ -329,6 +329,7 @@ describe('UserFormDialog', () => {
 
     expect(userStoreMock.addUser).toHaveBeenCalledWith(
       { firstName: 'Anna', lastName: 'Nowak', email: 'anna.nowak@example.com' },
+      // eslint-disable-next-line vitest/valid-expect
       expect.any(File)
     );
     expect(modalMock.close).toHaveBeenCalled();
@@ -346,6 +347,7 @@ describe('UserFormDialog', () => {
 
     expect(userStoreMock.updateUser).toHaveBeenCalledWith(
       { firstName: 'Anna', lastName: 'Nowak', email: 'anna.nowak@example.com' },
+      // eslint-disable-next-line vitest/valid-expect
       expect.any(File)
     );
     expect(modalMock.close).toHaveBeenCalled();
