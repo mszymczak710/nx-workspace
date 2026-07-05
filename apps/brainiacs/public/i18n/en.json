@@ -9,7 +9,8 @@
     "button": "Back to home page"
   },
   "shared": {
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "close": "Close"
   },
   "errors": {
     "http": {
@@ -30,7 +31,8 @@
     },
     "help": "Help",
     "home": "Home",
-    "users": "Brainiacs list"
+    "users": "Brainiacs list",
+    "toggleNavigation": "Toggle navigation"
   },
   "users": {
     "dialog": {

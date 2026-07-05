@@ -88,6 +88,15 @@ describe('UserDeleteConfirmationDialog', () => {
     expect(modalMock.close).not.toHaveBeenCalled();
   });
 
+  it('should set saving back to false after a failed deletion', async () => {
+    userStoreMock.deleteUser.mockReturnValue(throwError(() => ({ error: {} })));
+
+    component.deleteUser();
+    await fixture.whenStable();
+
+    expect(component.saving()).toBe(false);
+  });
+
   it('should display the error message alert when errorMessage is set', async () => {
     userStoreMock.deleteUser.mockReturnValue(throwError(() => ({ error: {} })));
 

@@ -129,7 +129,7 @@ describe('UserService', () => {
 
     const req = httpMock.expectOne(`${API_URL}/1/avatar`);
     expect(req.request.method).toBe(HttpMethod.Put);
-    expect(req.request.body instanceof FormData).toBe(true);
+    expect(req.request.body).toBeInstanceOf(FormData);
     expect(req.request.body.get('file')).toEqual(file);
     req.flush(mockUser);
   });

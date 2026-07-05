@@ -37,7 +37,7 @@ describe('Navbar', () => {
   it('should render all nav items', () => {
     const links: NodeListOf<HTMLAnchorElement> = fixture.nativeElement.querySelectorAll('.nav-link');
 
-    expect(links.length).toBe(component.navItems.length);
+    expect(links).toHaveLength(component.navItems.length);
   });
 
   it('should mark disabled nav items with the disabled class and no routerLink', () => {
@@ -53,13 +53,13 @@ describe('Navbar', () => {
     const codes = component.otherLangs().map(lang => lang.code);
 
     expect(codes).not.toContain(activeLang);
-    expect(codes.length).toBe(component.availableLangs.length - 1);
+    expect(codes).toHaveLength(component.availableLangs.length - 1);
   });
 
   it('should render a dropdown item for each other language', () => {
     const items: NodeListOf<HTMLButtonElement> = fixture.nativeElement.querySelectorAll('[ngbDropdownItem]');
 
-    expect(items.length).toBe(component.otherLangs().length);
+    expect(items).toHaveLength(component.otherLangs().length);
   });
 
   it('should toggle isCollapsed when the navbar toggler is clicked', async () => {

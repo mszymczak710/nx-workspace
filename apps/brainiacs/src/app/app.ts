@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Layout } from './features/layout/layout';
 
 @Component({
-  imports: [Layout],
   selector: 'brn-root',
+  imports: [Layout],
   templateUrl: './app.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

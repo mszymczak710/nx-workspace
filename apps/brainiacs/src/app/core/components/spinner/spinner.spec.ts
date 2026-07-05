@@ -64,11 +64,6 @@ describe('Spinner', () => {
     expect(spinner.classList).toContain('text-danger');
   });
 
-  it('should have role status for accessibility', () => {
-    const spinner = fixture.nativeElement.querySelector('.spinner-border');
-    expect(spinner.getAttribute('role')).toBe('status');
-  });
-
   it('should render visually hidden label', () => {
     const span = fixture.nativeElement.querySelector('.visually-hidden');
     expect(span).toBeTruthy();

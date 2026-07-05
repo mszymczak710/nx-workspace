@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  imports: [],
   selector: 'klg-root',
+  imports: [],
   templateUrl: './app.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

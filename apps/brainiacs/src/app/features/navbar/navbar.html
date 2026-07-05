@@ -13,7 +13,7 @@
               <img src="/images/flags/{{ activeLang() }}.png" alt="" class="flag-icon" />
               <span>{{ t('navigation.selectLanguage.' + activeLang()) }}</span>
             </div>
-            <i class="fa fa-angle-down"></i>
+            <i class="fa fa-angle-down" aria-hidden="true"></i>
           </button>
           <div ngbDropdownMenu>
             @for (lang of otherLangs(); track lang.code) {
@@ -28,23 +28,23 @@
 
       <button
         class="navbar-toggler"
-        (click)="isCollapsed.set(!isCollapsed())"
-        [attr.aria-expanded]="!isCollapsed()"
         aria-controls="navbarNav"
-        aria-label="Toggle navigation"
+        [attr.aria-label]="t('navigation.toggleNavigation')"
+        [attr.aria-expanded]="!isCollapsed()"
+        (click)="isCollapsed.set(!isCollapsed())"
       >
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse justify-content-end" [ngbCollapse]="isCollapsed()" id="navbarNav">
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav" [ngbCollapse]="isCollapsed()">
         <ul class="navbar-nav">
           @for (item of navItems; track item.label) {
             <li class="nav-item d-flex justify-content-end">
               <a
                 class="nav-link"
+                routerLinkActive="active"
                 [class.disabled]="item.disabled"
                 [routerLink]="item.disabled ? null : item.route"
-                routerLinkActive="active"
               >
                 {{ t(item.label) }}
               </a>

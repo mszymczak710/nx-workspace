@@ -25,7 +25,6 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
         if (error.status === HttpStatusCode.NotFound) {
           router.navigate(['/404']);
-          return;
         }
       });
 
