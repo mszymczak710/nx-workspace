@@ -1,14 +1,14 @@
 <ng-container *transloco="let t">
   <div class="modal-header">
     <h3 class="modal-title">{{ title() }}</h3>
-    <button class="btn-close" [disabled]="userForm().submitting()" (click)="cancel()"></button>
+    <button class="btn-close" [disabled]="userForm().submitting()" [attr.aria-label]="t('shared.close')" (click)="cancel()"></button>
   </div>
 
   <div class="modal-body">
     <form [formRoot]="userForm" id="userForm">
       @for (error of userForm().errors(); track error.kind) {
         @if (error.kind === 'general' && error.message) {
-          <span class="alert alert-danger d-block mb-3">{{ t(error.message) }}</span>
+          <span class="alert alert-danger d-block mb-3" role="alert">{{ t(error.message) }}</span>
         }
       }
 
@@ -42,8 +42,8 @@
       type="submit"
       class="btn btn-primary"
       ngbAutofocus
-      [disabled]="userForm().invalid() || avatarInvalid() || userForm().submitting()"
       form="userForm"
+      [disabled]="userForm().invalid() || avatarInvalid() || userForm().submitting()"
     >
       {{ t('users.dialog.actions.save') }}
       <brn-spinner [class.ms-2]="userForm().submitting()" [visible]="userForm().submitting()" [color]="'light'" />
@@ -65,58 +65,62 @@
       <label class="ms-1" [for]="name">
         {{ t(label) }}
         @if (required) {
-          <span class="required">*</span>
+          <span class="text-danger">*</span>
         }
       </label>
 
       @if (type === 'file') {
         <input
           #fileInput
-          [id]="name"
           class="form-control mt-1"
           type="file"
           accept="image/png,image/jpeg,image/webp"
+          [id]="name"
           [disabled]="avatarLoading()"
           [attr.ngbAutofocus]="isFirst ? '' : null"
+          [attr.aria-required]="required ? 'true' : null"
+          [attr.aria-describedby]="name + '-required-error ' + name + '-size-error'"
           [class.is-invalid]="avatarTouched() && avatarInvalid() && !avatarLoading()"
           (change)="onAvatarChange($event)"
           (blur)="avatarTouched.set(true)"
         />
 
         @if (avatarTouched() && avatarInvalid() && !avatarLoading()) {
-          <div class="text-danger">
+          <div class="text-danger" [id]="name + '-required-error'" role="alert">
             <small>{{ t('users.dialog.validation.required') }}</small>
           </div>
         }
 
         @if (avatarSizeInvalid()) {
-          <div class="text-danger">
+          <div class="text-danger" [id]="name + '-size-error'" role="alert">
             <small>{{ t('users.dialog.validation.avatar.square') }}</small>
           </div>
         }
 
         @if (avatarLoading()) {
           <div class="d-flex justify-content-center mt-4">
-            <brn-spinner [visible]="true" size="xxl" [color]="'primary'" />
+            <brn-spinner size="xxl" [visible]="true" [color]="'primary'" />
           </div>
         } @else if (avatarPreview()) {
           <div class="d-flex justify-content-center mt-4">
-            <img [src]="avatarPreview()" alt="avatar" class="avatar-preview" />
+            <img class="avatar-preview" alt="{{ userModel().firstName }} {{ userModel().lastName }}" [src]="avatarPreview()" />
           </div>
         }
       } @else {
         <input
-          [id]="name"
           class="form-control mt-1"
+          [id]="name"
           [type]="type"
           [formField]="field"
           [attr.ngbAutofocus]="isFirst ? '' : null"
           [placeholder]="t(placeholder)"
+          [attr.aria-required]="required ? 'true' : null"
+          [attr.aria-describedby]="field().touched() && field().invalid() ? name + '-error' : null"
           [class.is-invalid]="field().touched() && field().invalid()"
           [class.is-valid]="field().touched() && field().valid()"
         />
         @if (field().touched() && field().invalid()) {
-          <div class="text-danger">
+          <div class="text-danger" [id]="name + '-error'" role="alert">
             @for (error of field().errors(); track error) {
               @if (error.message) {
                 <small>{{ t(error.message) }}</small>

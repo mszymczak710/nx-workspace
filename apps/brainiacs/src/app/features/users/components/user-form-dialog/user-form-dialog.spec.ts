@@ -145,6 +145,7 @@ describe('UserFormDialog', () => {
 
   afterEach(() => {
     vi.unstubAllGlobals();
+    httpMock.verify();
   });
 
   it('should create in "create" mode when there is no selected user', async () => {
@@ -198,8 +199,6 @@ describe('UserFormDialog', () => {
     expect(component.avatarFile()).toBeTruthy();
     expect(component.avatarPreview()).toBe(mockUser.avatar);
     expect(component.avatarLoading()).toBe(false);
-
-    httpMock.verify();
   });
 
   it('should reset avatarLoading and leave the avatar empty when the avatar request fails', async () => {
@@ -302,7 +301,7 @@ describe('UserFormDialog', () => {
     fileInput.dispatchEvent(new Event('blur'));
     await fixture.whenStable();
 
-    const alert = fixture.nativeElement.querySelector('.text-danger');
+    const alert = fixture.nativeElement.querySelector('.text-danger[role="alert"]');
     expect(alert).toBeFalsy();
 
     await flushAvatarRequest();

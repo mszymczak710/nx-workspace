@@ -1,0 +1,14 @@
+@use 'variables' as *;
+@use 'bootstrap/scss/bootstrap' with (
+  $primary: $primary,
+  $secondary: $secondary,
+  $modal-md: $modal-md,
+  $tooltip-max-width: $tooltip-max-width,
+  $dropdown-min-width: $dropdown-min-width,
+  $dropdown-padding-y: $dropdown-padding-y,
+  $dropdown-item-padding-x: $dropdown-item-padding-x,
+  $table-bg-scale: $table-bg-scale
+);
+@use 'ngx-toastr/toastr';
+@use '@fortawesome/fontawesome-free/scss/fontawesome';
+@use '@fortawesome/fontawesome-free/scss/solid';

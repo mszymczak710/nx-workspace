@@ -238,6 +238,6 @@ export class UserFormDialog {
       return true;
     }
 
-    return window.confirm(this.translocoService.translate('users.dialog.confirmClose'));
+    return globalThis.confirm(this.translocoService.translate('users.dialog.confirmClose'));
   }
 }

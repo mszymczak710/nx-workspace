@@ -113,7 +113,7 @@ describe('UsersTable', () => {
     const pagination = fixture.nativeElement.querySelector('brn-user-table-pagination');
     const emptyRow = fixture.nativeElement.querySelector('.empty-row');
 
-    expect(rows.length).toBe(mockUsers.length);
+    expect(rows).toHaveLength(mockUsers.length);
     expect(pagination).toBeTruthy();
     expect(emptyRow).toBeFalsy();
   });

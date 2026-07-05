@@ -9,7 +9,8 @@
     "button": "Wróć do strony głównej"
   },
   "shared": {
-    "loading": "Trwa ładowanie..."
+    "loading": "Trwa ładowanie...",
+    "close": "Zamknij"
   },
   "errors": {
     "http": {
@@ -30,7 +31,8 @@
     },
     "help": "Pomoc",
     "home": "Strona główna",
-    "users": "Lista mądrych ludzi"
+    "users": "Lista mądrych ludzi",
+    "toggleNavigation": "Przełącz nawigację"
   },
   "users": {
     "dialog": {

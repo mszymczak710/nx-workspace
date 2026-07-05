@@ -44,6 +44,7 @@ export class UserDeleteConfirmationDialog {
         error: error => {
           const errorMessage = extractGeneralErrorMessage(error);
           this.errorMessage.set(errorMessage);
+          this.saving.set(false);
         },
         complete: () => {
           this.saving.set(false);

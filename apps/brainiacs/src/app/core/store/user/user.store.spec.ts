@@ -105,7 +105,7 @@ describe('UserStore', () => {
     store.loadUsers({ page: 1, pageSize: 10 });
 
     expect(userServiceMock.getUsers).toHaveBeenCalledWith({ page: 1, pageSize: 10 });
-    expect(store.entities().length).toBe(2);
+    expect(store.entities()).toHaveLength(2);
     expect(store.totalElements()).toBe(2);
     expect(store.totalPages()).toBe(1);
     expect(store.currentPage()).toBe(1);
