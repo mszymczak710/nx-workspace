@@ -91,7 +91,21 @@ export default [
       '@angular-eslint/prefer-signal-model': 'error',
 
       // --- typescript ---
-      '@typescript-eslint/member-ordering': ['error', { default: ['static-field', 'instance-field', 'static-method', 'instance-method'] }],
+      '@typescript-eslint/member-ordering': [
+        'error',
+        {
+          default: [
+            'static-field',
+            'private-instance-field',
+            'protected-instance-field',
+            'public-instance-field',
+            'static-method',
+            'private-instance-method',
+            'protected-instance-method',
+            'public-instance-method'
+          ]
+        }
+      ],
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/prefer-readonly': 'error',
       '@typescript-eslint/no-empty-object-type': 'off',
