@@ -183,6 +183,25 @@ export class UserFormDialog {
     });
   }
 
+  private isSquareImage(url: string): Promise<boolean> {
+    return new Promise(resolve => {
+      const img = new Image();
+      img.onload = () => resolve(img.width === img.height);
+      img.onerror = () => resolve(false);
+      img.src = url;
+    });
+  }
+
+  private setPreview(url: string | null): void {
+    const current = this.avatarPreview();
+
+    if (current?.startsWith('blob:')) {
+      URL.revokeObjectURL(current);
+    }
+
+    this.avatarPreview.set(url);
+  }
+
   async onAvatarChange(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
 
@@ -208,25 +227,6 @@ export class UserFormDialog {
     this.avatarSizeInvalid.set(false);
     this.avatarFile.set(file);
     this.setPreview(url);
-  }
-
-  private isSquareImage(url: string): Promise<boolean> {
-    return new Promise(resolve => {
-      const img = new Image();
-      img.onload = () => resolve(img.width === img.height);
-      img.onerror = () => resolve(false);
-      img.src = url;
-    });
-  }
-
-  private setPreview(url: string | null): void {
-    const current = this.avatarPreview();
-
-    if (current?.startsWith('blob:')) {
-      URL.revokeObjectURL(current);
-    }
-
-    this.avatarPreview.set(url);
   }
 
   cancel(): void {

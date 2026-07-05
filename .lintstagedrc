@@ -1,5 +1,4 @@
 {
-  "*.ts": ["prettier --write"],
-  "*.html": ["prettier --write"],
+  "*.{html,ts,js,json,md,yml}": ["prettier --write"],
   "*.scss": ["prettier --write", "stylelint --fix"]
 }

@@ -53,3 +53,5 @@ vitest.config.*.timestamp*
 .env*
 
 .scannerwork
+
+.claude/agents
