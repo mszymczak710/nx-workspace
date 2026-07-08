@@ -1,14 +1,14 @@
 <ng-container *transloco="let t">
   <div class="modal-header">
-    <h3 class="modal-title">{{ title() }}</h3>
-    <button class="btn-close" [disabled]="userForm().submitting()" [attr.aria-label]="t('shared.close')" (click)="cancel()"></button>
+    <h2 class="modal-title" id="user-form-dialog-title">{{ title() }}</h2>
+    <button class="btn-close" [attr.aria-label]="t('shared.close')" [disabled]="userForm().submitting()" (click)="cancel()"></button>
   </div>
 
   <div class="modal-body">
     <form [formRoot]="userForm" id="userForm">
       @for (error of userForm().errors(); track error.kind) {
         @if (error.kind === 'general' && error.message) {
-          <span class="alert alert-danger d-block mb-3" role="alert">{{ t(error.message) }}</span>
+          <span class="alert alert-danger d-block mb-3" role="alert" [attr.data-testid]="'form-general-error'">{{ t(error.message) }}</span>
         }
       }
 

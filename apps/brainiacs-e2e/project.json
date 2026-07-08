@@ -1,0 +1,13 @@
+{
+  "name": "brainiacs-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/brainiacs-e2e/src",
+  "tags": ["scope:brainiacs", "type:e2e"],
+  "implicitDependencies": ["brainiacs"],
+  "targets": {
+    "e2e": {
+      "dependsOn": []
+    }
+  }
+}

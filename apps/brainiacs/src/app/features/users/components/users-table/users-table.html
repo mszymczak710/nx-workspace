@@ -5,11 +5,15 @@
         <thead class="table-secondary">
           <tr>
             <th scope="col">{{ t('users.table.columns.id') }}</th>
-            <th scope="col"></th>
+            <th scope="col">
+              <span class="visually-hidden">{{ t('users.table.columns.avatar') }}</span>
+            </th>
             <th scope="col">{{ t('users.table.columns.firstName') }}</th>
             <th scope="col">{{ t('users.table.columns.lastName') }}</th>
             <th scope="col">{{ t('users.table.columns.email') }}</th>
-            <th scope="col"></th>
+            <th scope="col">
+              <span class="visually-hidden">{{ t('users.table.columns.actions') }}</span>
+            </th>
           </tr>
         </thead>
         @if (users().length > 0) {

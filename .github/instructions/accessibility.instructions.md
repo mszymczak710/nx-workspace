@@ -22,11 +22,10 @@ equally regardless of UI kit.
 - One `<h1>` per view; keep heading levels sequential (don't skip a level purely for visual size —
   style with CSS instead).
 - Expose landmarks: the root layout should have a `<nav>` for the navbar and a `<main>` wrapping the
-  routed content (`<router-outlet>`). `brainiacs`' layout currently renders navbar + `<router-outlet>`
-  with no `<main>` around it — treat that as a real gap to fix when touched, not a pattern to copy.
+  routed content (`<router-outlet>`).
 - Provide a "skip to main content" link as the first focusable element on the page (visually hidden
-  until focused), so keyboard users can bypass the navbar instead of tabbing through it on every page.
-  This is currently missing — add it alongside the `<main>` landmark above when touching the layout.
+  until focused, e.g. Bootstrap's `.visually-hidden-focusable`), so keyboard users can bypass the navbar
+  instead of tabbing through it on every page.
 
 # Forms
 
@@ -82,11 +81,11 @@ equally regardless of UI kit.
 
 - A client-side route change has no full page reload, so screen readers get no automatic signal that
   the view changed. Set a `title` on each route and let Angular's router update `document.title` from
-  it — most screen readers announce a document title change. None of `brainiacs`' routes set `title`
-  today (see `app.routes.ts`) — treat that as a real gap to fix, not a pattern to copy for new routes.
+  it — most screen readers announce a document title change. If routes in an app don't set this yet,
+  treat it as a real gap to fix, not a pattern to copy for new routes.
 - Indicate loading/busy state with `role="status"` plus a visually-hidden text label (e.g.
   `<span class="visually-hidden">{{ loadingLabel }}</span>` inside the spinner element) — never via
-  animation or color alone. This workspace already has one component doing this correctly; match it.
+  animation or color alone.
 - Respect `prefers-reduced-motion` for any non-essential animation/transition you add — don't assume
   everyone wants motion.
 
@@ -100,8 +99,9 @@ equally regardless of UI kit.
 
 # Internationalization (Transloco)
 
-- Keep `<html lang>` in sync with the active Transloco language. If nothing currently updates it on
-  language change, treat that as a real gap to fix when touched, not a pattern to copy.
+- Keep `<html lang>` in sync with the active Transloco language via an `effect()` at the root component
+  reacting to `translocoService.activeLang()`; apply that pattern for any new root-level
+  language-dependent DOM state.
 - Any string used as an accessible name (`aria-label`, image `alt`) goes through Transloco like the
   rest of the UI copy — no hardcoded English fallback.
 

@@ -21,8 +21,9 @@ export class Users {
 
   addUser(): void {
     const modalRef = this.modal.open(UserFormDialog, {
-      size: 'md',
+      fullscreen: 'md',
       backdrop: 'static',
+      ariaLabelledBy: 'user-form-dialog-title',
       beforeDismiss: () => modalRef.componentInstance.canDismiss()
     });
   }

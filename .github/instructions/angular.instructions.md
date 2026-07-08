@@ -149,3 +149,32 @@ class members like this:
   own `src/app/core` is **not** importable from another app; only `libs/shared/core` is meant to be
   reused across `brainiacs` and `invoice-generator`. If something under an app's own `core` folder
   needs to be shared, promote it into `libs/shared/core` rather than importing across the app boundary.
+
+# Enums
+
+- Avoid TypeScript's native `enum` (and `const enum`) — prefer a `const` object literal with
+  `as const` plus a derived union type via `typeof X[keyof typeof X]`, e.g.:
+
+```typescript
+export const HttpMethod = {
+  Get: 'GET',
+  Post: 'POST',
+  Put: 'PUT',
+  Patch: 'PATCH',
+  Delete: 'DELETE'
+} as const;
+
+export type HttpMethod = (typeof HttpMethod)[keyof typeof HttpMethod];
+```
+
+This keeps the values tree-shakeable (a real `enum` emits a runtime object even when none of its
+members are used), avoids numeric-enum footguns (reverse mapping, non-exhaustive numeric values,
+accidental structural typing across unrelated numeric enums), and produces a type that's a plain
+string/number union — easier to narrow in a `switch`, serialize over HTTP, and compare with `===`
+than a TypeScript enum member.
+
+- Key casing is PascalCase (`Get`, `Post`, ...) for ergonomic access (`HttpMethod.Get`); the _value_
+  is whatever casing the external contract expects (e.g. `'GET'` for an HTTP method, since that's what
+  actually goes over the wire).
+- Existing native `enum` usages aren't required to be migrated on sight — treat them as legacy to
+  convert when you're already touching that file, not a repo-wide cleanup task.

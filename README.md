@@ -54,7 +54,7 @@ npm run start:brn
 
 ### invoice-generator
 
-1. Start the mock API with `json-server` (adjust the command/port to match your `db.json` location):
+1. Start the mock API with `json-server`:
 
 ```sh
 npm run mock:klg
@@ -103,17 +103,59 @@ npm run test:affected
 
 Coverage reports are generated automatically and can be found under the `coverage/` directory at the workspace root.
 
-### End-to-end tests
+### End-to-end tests (Playwright)
 
-The applications also include end-to-end (e2e) test coverage.
+Both applications have dedicated e2e projects (`brainiacs-e2e`, `invoice-generator-e2e`) using [Playwright](https://playwright.dev/).
+
+**No real backend or database is required to run the e2e suites.** All API requests are intercepted and mocked directly in the tests via Playwright's `page.route()` — this keeps the tests fast, deterministic, and independent of `brainiacs-backend`/PostgreSQL or `json-server` being available or in a specific data state.
 
 ```sh
 # Run e2e tests for a specific app
-npx nx e2e brainiacs-e2e
-npx nx e2e invoice-generator-e2e
+npm run e2e:brn
+npm run e2e:klg
+
+# Run all e2e suites
+npm run e2e
+
+# Run only affected e2e suites
+npm run e2e:affected
 ```
 
-> Note: for `brainiacs`, make sure the [brainiacs-backend](https://github.com/mszymczak710/brainiacs-backend) is running before executing e2e tests, since the app depends on it for real data. For `invoice-generator`, make sure `json-server` is running with the expected `db.json` fixture data.
+By default, tests run against Chromium only (Firefox/WebKit can be re-enabled per project in `playwright.config.mts` if needed).
+
+**First-time setup** — Playwright needs its browser binaries and, on Linux, some system libraries:
+
+```sh
+npx playwright install --with-deps chromium
+```
+
+If you hit missing shared library errors when running tests locally, run:
+
+```sh
+sudo npx playwright install-deps
+```
+
+**Interactive mode**, useful while writing or debugging tests:
+
+```sh
+npx nx e2e brainiacs-e2e --ui
+```
+
+Test artifacts (HTML report, screenshots, traces on failure) are output under `dist/.playwright/apps/<project-name>/`.
+
+**Project structure per e2e app:**
+
+```plain
+apps/<app-name>-e2e/
+  e2e/                # Test scenarios (*.spec.ts)
+  src/
+    pages/            # Page Object Model — one class per view/dialog
+    mocks/            # API mocking helpers and mock data builders
+    utils/            # Shared test utilities (e.g. fixture path resolution, axe a11y scans)
+    fixtures.ts        # test.extend(...) wiring POM instances into `test`
+  fixtures/           # Static test files (e.g. sample avatar image)
+  playwright.config.mts
+```
 
 ## Linting
 

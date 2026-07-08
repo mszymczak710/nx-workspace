@@ -2,7 +2,7 @@
 applyTo: 'apps/brainiacs-e2e/**/*.ts,apps/invoice-generator-e2e/**/*.ts'
 ---
 
-Conventions for the Playwright e2e suites (`brainiacs-e2e`, `invoice-generator-e2e`), built with the
+Conventions for this workspace's Playwright e2e suites (one `<app>-e2e` project per app), built with the
 **Page Object Model (POM)**. See [AGENTS.md](../../AGENTS.md) for the wider repo overview and
 [unit-testing.instructions.md](unit-testing.instructions.md) for unit tests — the two are not interchangeable:
 e2e specs use Playwright's own `test`/`expect` from `@playwright/test`, never Vitest globals or
@@ -17,7 +17,7 @@ apps/<app>-e2e/
       <feature>.page.ts
     fixtures.ts        # test.extend(...) wiring POM instances into `test`
     <feature>.spec.ts  # one spec file per user-facing flow
-  playwright.config.ts
+  playwright.config.mts
 ```
 
 Mirror the app's own component composition in the POM layer: if a list component renders repeated row
@@ -46,21 +46,20 @@ components, model that as a `<Feature>Page` exposing a `row(index)` method that 
 
 # Test independence & data
 
-- `brainiacs-e2e` depends on the separately-running `brainiacs-backend`; don't write tests that assume
-  specific pre-existing rows beyond what the test itself creates/seeds. Prefer creating and cleaning up
-  a test's own data over relying on backend fixture state. For flows that don't need real persistence,
-  consider mocking responses with `page.route()` to keep the test deterministic and fast; reserve a
-  smaller set of true full-stack tests for the critical paths.
-- `invoice-generator-e2e` runs against `json-server` backed by `db.json`, which persists mutations to
-  disk. Tests that create/update/delete data must leave it as they found it (`test.afterEach` cleanup,
-  or restore/reset `db.json` before the run) so the suite stays idempotent and re-runnable.
-- Each test must be runnable in isolation and in any order — no test should depend on state left behind
-  by another.
+- Every API request is intercepted and mocked via `page.route()` (see the suite's `src/mocks/*.mock.ts`),
+  so the suite is deterministic, fast, and runnable without any real backend/database available or in
+  any particular data state. Each `<app>-e2e` project in this workspace follows this strategy.
+- If a suite genuinely needs to run against a real/locally-served backend that persists mutations
+  instead, tests that create/update/delete data must leave it as they found it (`test.afterEach`
+  cleanup, or restore/reset the backing store before the run) so the suite stays idempotent and
+  re-runnable.
+- Each test must be runnable in isolation and in any order — no test should depend on state left
+  behind by another.
 
-# Config (`playwright.config.ts`)
+# Config (`playwright.config.mts`)
 
-- Set `baseURL` and use `webServer` to auto-start the app (and `json-server` for
-  `invoice-generator-e2e`) before the run, instead of requiring it to already be running.
+- Set `baseURL` and use `webServer` to auto-start the app before the run, instead of requiring it to
+  already be running.
 - `retries` on CI only, `trace: 'on-first-retry'`.
 - Start with the `chromium` project only unless cross-browser coverage is explicitly required — keep
   the suite fast.
@@ -86,19 +85,17 @@ components, model that as a `<Feature>Page` exposing a `row(index)` method that 
 # Running
 
 ```sh
-npx nx e2e brainiacs-e2e
-npx nx e2e invoice-generator-e2e
+npx nx e2e <app>-e2e
 
-npx nx e2e brainiacs-e2e --ui       # interactive/debug mode
-npx nx e2e brainiacs-e2e --headed   # watch the browser
+npx nx e2e <app>-e2e --ui       # interactive/debug mode
+npx nx e2e <app>-e2e --headed   # watch the browser
 ```
 
-Per [README.md](../../README.md): `brainiacs-e2e` needs `brainiacs-backend` running (or the
-`webServer` hook driving it); `invoice-generator-e2e` needs `json-server` serving the expected
-`db.json`.
+Run `npx nx show project <app>-e2e --json` (or check `apps/`) for the exact `<app>-e2e` project names in
+this workspace.
 
 # CI
 
-The e2e job in [.github/workflows/ci.yml](../workflows/ci.yml) starts the required backend(s) first
-(service container / `json-server` step, or the `webServer` hook in `playwright.config.ts`) before
-running `nx affected --target=e2e` (or `nx e2e <project>` for a full run).
+The `e2e-test` job in [.github/workflows/ci.yml](../workflows/ci.yml) runs
+`nx affected --target=e2e` independently of the other jobs (no backend/service-container setup needed)
+— the `webServer` hook in each project's `playwright.config.mts` starts the app itself before tests run.

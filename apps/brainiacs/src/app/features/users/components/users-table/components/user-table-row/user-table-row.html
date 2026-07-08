@@ -1,5 +1,5 @@
 <ng-container *transloco="let t">
-  <td class="align-middle">{{ user().id }}</td>
+  <td class="align-middle" [attr.data-testid]="'user-' + user().id + '-row'">{{ user().id }}</td>
   <td class="align-middle">
     <img class="avatar" [src]="user().avatar" alt="{{ user().firstName }} {{ user().lastName }}" />
   </td>
@@ -15,16 +15,16 @@
   <td class="align-middle text-end">
     <button
       class="btn btn-sm"
-      [ngbTooltip]="t('users.table.actions.update')"
       [attr.aria-label]="t('users.table.actions.update')"
+      [ngbTooltip]="t('users.table.actions.update')"
       (click)="updateUser.emit()"
     >
       <i class="fas fa-edit" aria-hidden="true"></i>
     </button>
     <button
       class="btn btn-sm"
-      [ngbTooltip]="t('users.table.actions.delete')"
       [attr.aria-label]="t('users.table.actions.delete')"
+      [ngbTooltip]="t('users.table.actions.delete')"
       (click)="deleteUser.emit()"
     >
       <i class="fas fa-trash-alt" aria-hidden="true"></i>

@@ -1,16 +1,19 @@
 {
   "home": {
     "button": "Przejdź do listy użytkowników",
+    "pageTitle": "Strona główna",
     "title": "Witaj w aplikacji mądrych ludzi!"
   },
   "notFound": {
     "title": "Ups! Ta strona zniknęła gdzieś między synapsami",
     "message": "Strona, której szukasz, nie istnieje albo została przeniesiona.",
-    "button": "Wróć do strony głównej"
+    "button": "Wróć do strony głównej",
+    "pageTitle": "Nie znaleziono strony"
   },
   "shared": {
     "loading": "Trwa ładowanie...",
-    "close": "Zamknij"
+    "close": "Zamknij",
+    "skipToMainContent": "Przejdź do głównej treści"
   },
   "errors": {
     "http": {
@@ -32,9 +35,11 @@
     "help": "Pomoc",
     "home": "Strona główna",
     "users": "Lista mądrych ludzi",
-    "toggleNavigation": "Przełącz nawigację"
+    "toggleNavigation": "Przełącz nawigację",
+    "mainNavigation": "Nawigacja główna"
   },
   "users": {
+    "pageTitle": "Lista mądrych ludzi",
     "dialog": {
       "actions": {
         "cancel": "Anuluj",
@@ -105,10 +110,13 @@
         "email": "E-mail",
         "firstName": "Imię",
         "id": "ID",
-        "lastName": "Nazwisko"
+        "lastName": "Nazwisko",
+        "avatar": "Awatar",
+        "actions": "Akcje"
       },
       "pageSize": "Liczba elementów na stronie:",
-      "noDataRow": "Brak użytkowników"
+      "noDataRow": "Brak użytkowników",
+      "pagination": "Paginacja użytkowników"
     }
   }
 }
