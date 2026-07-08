@@ -34,14 +34,19 @@ export class UsersTable {
 
   deleteUser(user: User): void {
     this.userStore.setSelectedUser(user);
-    this.modal.open(UserDeleteConfirmationDialog, { size: 'md', backdrop: 'static' });
+    this.modal.open(UserDeleteConfirmationDialog, {
+      fullscreen: 'md',
+      backdrop: 'static',
+      ariaLabelledBy: 'user-delete-confirmation-dialog-title'
+    });
   }
 
   updateUser(user: User): void {
     this.userStore.setSelectedUser(user);
     const modalRef = this.modal.open(UserFormDialog, {
-      size: 'md',
+      fullscreen: 'md',
       backdrop: 'static',
+      ariaLabelledBy: 'user-form-dialog-title',
       beforeDismiss: () => modalRef.componentInstance.canDismiss()
     });
   }

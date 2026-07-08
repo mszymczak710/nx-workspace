@@ -1,2 +1,7 @@
+<ng-container *transloco="let t">
+  <a class="visually-hidden-focusable" href="#main-content">{{ t('shared.skipToMainContent') }}</a>
+</ng-container>
 <brn-navbar />
-<router-outlet />
+<main id="main-content">
+  <router-outlet />
+</main>

@@ -9,6 +9,12 @@
       </select>
     </div>
 
-    <ngb-pagination [collectionSize]="collectionSize()" [pageSize]="pageSize()" [page]="page()" (pageChange)="onPageChange($event)" />
+    <ngb-pagination
+      [collectionSize]="collectionSize()"
+      [pageSize]="pageSize()"
+      [page]="page()"
+      [attr.aria-label]="t('users.table.pagination')"
+      (pageChange)="onPageChange($event)"
+    />
   </div>
 </ng-container>

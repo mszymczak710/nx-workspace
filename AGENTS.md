@@ -25,7 +25,8 @@ Stack: Angular 21 (standalone components, signals, `@angular/build`), Vitest for
 ## Per-app stack
 
 The two apps use **different UI kits** — this is the one significant per-app split in an otherwise
-shared set of conventions:
+shared set of conventions (both apps' e2e suites use the same fully-mocked API strategy — see
+[e2e-testing.instructions.md](.github/instructions/e2e-testing.instructions.md)):
 
 |         | `brainiacs`                                | `invoice-generator`            |
 | ------- | ------------------------------------------ | ------------------------------ |
@@ -33,11 +34,11 @@ shared set of conventions:
 | Theming | Bootstrap 5 Sass variables                 | Angular Material theme tokens  |
 | Icons   | FontAwesome                                | `mat-icon` / Material Symbols  |
 
-The files in `.github/instructions/` describe these conventions **by technology** (ng-bootstrap vs.
-Angular Material, Bootstrap theming vs. Material theming), not by app name, so they stay reusable
-as-is in other projects — use this table to know which part of a given instructions file applies to
-which app here. Everything else in those files (Angular/signals conventions, testing, accessibility
-fundamentals, e2e/POM conventions) is written to be universal and isn't app-specific at all.
+The files in `.github/instructions/` describe these conventions **by technology**, not by app name, so
+they stay reusable as-is in other projects — use this table to know which part of a given instructions
+file applies to which app here. Everything else in those files (Angular/signals conventions, testing,
+accessibility fundamentals, e2e/POM conventions) is written to be universal and isn't app-specific at
+all.
 
 ## Module boundaries
 
@@ -108,13 +109,13 @@ subscriptions).
 - Conventional commits enforced by commitlint ([commitlint.config.mjs](commitlint.config.mjs)): types `build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test`, scopes from `@commitlint/config-nx-scopes` (i.e. Nx project names — `brainiacs`, `invoice-generator`, `core`).
 - Husky hooks ([.husky/](.husky/)):
   - `pre-commit`: `lint-staged` (Prettier, Stylelint on staged files) + `nx affected --target=lint --fix --uncommitted`.
-  - `pre-push`: `nx affected --target=test --base=origin/develop` then `nx affected --target=build --base=origin/develop`.
+  - `pre-push`: `nx affected --target=test --base=origin/develop` then `nx affected --target=e2e --base=origin/develop` then `nx affected --target=build --base=origin/develop`.
 - Default/base branch for `nx affected` comparisons is `develop` ([nx.json](nx.json) `defaultBase`), not `main`.
 - Don't bypass hooks (`--no-verify`) to get around a failing lint/test — fix the underlying issue.
 
 ## CI (`.github/workflows/ci.yml`)
 
-On PRs/pushes to `develop`: `format-check`, `lint`, and `test` (+coverage upload) run in parallel; `sonar` needs `test`; `build` needs `lint` + `format-check` + `test`; `e2e` starts the required backend(s) and runs after `build`; `deploy` (push to `develop` only) needs all of the above including `sonar`, `build`, and `e2e`. Before opening a PR, a change should pass: `npm run format:check`, `npm run lint:affected`, `npm run test:affected` (or `test:coverage` if touching many projects), `npm run build:affected`, and the relevant `nx affected --target=e2e`.
+On PRs/pushes to `develop`: `format-check`, `lint`, `unit-test` (+coverage upload), and `e2e-test` run independently/in parallel; `sonar` needs `unit-test`; `build` needs `lint` + `format-check` + `unit-test` + `e2e-test`; `deploy` (push to `develop` only) needs all of the above including `sonar` and `build`. No backend/database is started for `e2e-test` — the e2e suites mock all API responses via Playwright's `page.route()` (see e2e-testing.instructions.md), so they don't depend on `brainiacs-backend` or `json-server` being available. Before opening a PR, a change should pass: `npm run format:check`, `npm run lint:affected`, `npm run test:affected` (or `test:coverage` if touching many projects), `npm run build:affected`, and the relevant `nx affected --target=e2e`.
 
 ## PR checklist
 

@@ -3,14 +3,18 @@
 @if (user) {
   <ng-container *transloco="let t">
     <div class="modal-header">
-      <h4 class="modal-title">{{ t('users.dialog.delete.title') }}</h4>
+      <h2 class="modal-title" id="user-delete-confirmation-dialog-title">{{ t('users.dialog.delete.title') }}</h2>
       <button class="btn-close" [attr.aria-label]="t('shared.close')" [disabled]="saving()" (click)="cancel()"></button>
     </div>
     <div class="modal-body">
       @if (errorMessage()) {
-        <span class="alert alert-danger d-block mb-3" role="alert">{{ t(errorMessage()) }}</span>
+        <span class="alert alert-danger d-block mb-3" role="alert" [attr.data-testid]="'delete-general-error'">
+          {{ t(errorMessage()) }}
+        </span>
       }
-      <p>{{ t('users.dialog.delete.confirmationMessage', { firstName: user.firstName, lastName: user.lastName }) }}</p>
+      <p [attr.data-testid]="'delete-confirmation-message'">
+        {{ t('users.dialog.delete.confirmationMessage', { firstName: user.firstName, lastName: user.lastName }) }}
+      </p>
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" [disabled]="saving()" (click)="cancel()">

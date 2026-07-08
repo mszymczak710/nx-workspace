@@ -1,9 +1,10 @@
 import { httpErrorInterceptor } from '@libs/shared/core/interceptors';
+import { TranslocoTitleStrategy } from '@libs/shared/core/services';
 import { initializeApp, provideAppTransloco } from '@libs/shared/core/utils';
 
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, provideAppInitializer, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, TitleStrategy } from '@angular/router';
 
 import { provideToastr } from 'ngx-toastr';
 
@@ -20,6 +21,7 @@ export const appConfig: ApplicationConfig = {
       timeOut: 3000,
       preventDuplicates: true
     }),
-    provideAppTransloco(['pl', 'en'], 'pl')
+    provideAppTransloco(['pl', 'en'], 'pl'),
+    { provide: TitleStrategy, useClass: TranslocoTitleStrategy }
   ]
 };

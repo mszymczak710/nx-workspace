@@ -1,16 +1,19 @@
 {
   "home": {
     "button": "Go to users list",
+    "pageTitle": "Home",
     "title": "Welcome to the app for smart people!"
   },
   "notFound": {
     "title": "Oops! This page vanished between the synapses",
     "message": "The page you're looking for doesn't exist or has been moved.",
-    "button": "Back to home page"
+    "button": "Back to home page",
+    "pageTitle": "Page not found"
   },
   "shared": {
     "loading": "Loading...",
-    "close": "Close"
+    "close": "Close",
+    "skipToMainContent": "Skip to main content"
   },
   "errors": {
     "http": {
@@ -32,9 +35,11 @@
     "help": "Help",
     "home": "Home",
     "users": "Brainiacs list",
-    "toggleNavigation": "Toggle navigation"
+    "toggleNavigation": "Toggle navigation",
+    "mainNavigation": "Main navigation"
   },
   "users": {
+    "pageTitle": "Brainiacs list",
     "dialog": {
       "actions": {
         "cancel": "Cancel",
@@ -105,10 +110,13 @@
         "email": "Email",
         "firstName": "First name",
         "id": "ID",
-        "lastName": "Last name"
+        "lastName": "Last name",
+        "avatar": "Avatar",
+        "actions": "Actions"
       },
       "pageSize": "Items per page:",
-      "noDataRow": "No users found"
+      "noDataRow": "No users found",
+      "pagination": "Users pagination"
     }
   }
 }

@@ -18,6 +18,9 @@ import { mapHttpErrorToSubmitErrors } from '../../../../core/utils/http-error-ma
   imports: [TranslocoModule, FormField, FormRoot, NgTemplateOutlet, Spinner],
   templateUrl: './user-form-dialog.html',
   styleUrl: './user-form-dialog.scss',
+  host: {
+    '(window:beforeunload)': 'handleBeforeUnload($event)'
+  },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserFormDialog {
@@ -200,6 +203,12 @@ export class UserFormDialog {
     }
 
     this.avatarPreview.set(url);
+  }
+
+  handleBeforeUnload(event: BeforeUnloadEvent): void {
+    if (this.hasUnsavedChanges()) {
+      event.preventDefault();
+    }
   }
 
   async onAvatarChange(event: Event): Promise<void> {

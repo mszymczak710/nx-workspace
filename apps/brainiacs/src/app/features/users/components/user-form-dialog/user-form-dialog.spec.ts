@@ -1,4 +1,5 @@
 import { getTranslocoModule } from '@libs/shared/core/testing';
+import { HttpMethod } from '@libs/shared/core/types';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { provideHttpClient } from '@angular/common/http';
@@ -191,7 +192,7 @@ describe('UserFormDialog', () => {
     await setup();
 
     const req = httpMock.expectOne(mockUser.avatar);
-    expect(req.request.method).toBe('GET');
+    expect(req.request.method).toBe(HttpMethod.Get);
 
     req.flush(new Blob(['avatar-bytes'], { type: 'image/png' }));
     await fixture.whenStable();
@@ -385,5 +386,28 @@ describe('UserFormDialog', () => {
 
     expect(component.canDismiss()).toBe(false);
     expect(confirmSpy).toHaveBeenCalled();
+  });
+
+  it('should prevent beforeunload when there are unsaved changes', async () => {
+    await setup();
+    await fillValidFormFields();
+
+    const event = new Event('beforeunload', { cancelable: true }) as BeforeUnloadEvent;
+    const preventDefaultSpy = vi.spyOn(event, 'preventDefault');
+
+    globalThis.dispatchEvent(event);
+
+    expect(preventDefaultSpy).toHaveBeenCalled();
+  });
+
+  it('should not prevent beforeunload when there are no unsaved changes', async () => {
+    await setup();
+
+    const event = new Event('beforeunload', { cancelable: true }) as BeforeUnloadEvent;
+    const preventDefaultSpy = vi.spyOn(event, 'preventDefault');
+
+    globalThis.dispatchEvent(event);
+
+    expect(preventDefaultSpy).not.toHaveBeenCalled();
   });
 });
